@@ -1,1 +1,179 @@
-/* You can add global styles to this file, and also import other style files */
+::ng-deep .p-toast .p-toast-message {
+    border-radius: 15px !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 1rem !important;
+    font-size: 0.9rem !important;
+    min-width: 350px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+::ng-deep .p-toast .p-toast-message-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+::ng-deep .p-toast .p-toast-message-text {
+    flex: 1;
+}
+
+::ng-deep .p-toast .p-toast-icon-close {
+    color: white !important;
+    font-size: 1.2rem !important;
+    margin-left: auto !important; 
+}
+
+/* 🌟 Hide the left-side icon */
+::ng-deep .p-toast .p-toast-message-icon {
+    display: none !important;
+}
+
+::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+    background-color: #4caf50 !important;
+    color: white !important;
+    border-left: 6px solid #2e7d32;
+}
+
+::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+    background-color: #f44336 !important;
+    color: white !important;
+    border-left: 6px solid #c62828;
+}
+
+::ng-deep .p-toast .p-toast-message .p-toast-summary,
+::ng-deep .p-toast .p-toast-message .p-toast-detail {
+    color: white !important;
+    font-weight: 600;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+    background-color: #fff !important;
+    color: #000;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+::ng-deep .p-dialog-mask {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+::ng-deep .p-dialog .p-dialog-header {
+    background-color: rgb(11, 150, 150);
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+::ng-deep .p-dialog .p-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+::ng-deep .p-dialog .p-button {
+    border-radius: 10px !important;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+::ng-deep .p-dialog .p-button.p-button-primary {
+    background-color: #3f51b5 !important;
+    border: none;
+    margin-right: 10px;
+}
+
+::ng-deep .p-dialog .p-button.p-button-text {
+    color: #3f51b5 !important;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+    overflow-y: auto !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 5px;
+}
+
+::ng-deep .p-dialog .p-dialog-content::-webkit-scrollbar {
+    display: none;
+}
+
+
+::ng-deep .p-inputtext {
+    border-radius: 10px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+}
+
+::ng-deep .p-dropdown {
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+::ng-deep .p-dropdown .p-dropdown-label {
+    padding: 0.5rem;
+}
+
+::ng-deep .p-dialog .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+::ng-deep .p-dialog .form-label {
+    font-weight: 600;
+    color: #333;
+}
+
+::ng-deep .custom-dropdown .p-dropdown {
+    width: 100% !important;
+    height: 45px !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid #ced4da !important;
+    padding: 0 1rem !important;
+    font-size: 1rem !important;
+    color: #495057 !important;
+    box-shadow: none !important;
+  }
+  
+  ::ng-deep .custom-dropdown .p-dropdown .p-inputtext {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  ::ng-deep .custom-dropdown .p-dropdown-label {
+    padding: 0.6rem 0 !important;
+    line-height: 1.5 !important;
+    color: #6c757d !important;
+  }
+  
+  ::ng-deep .custom-dropdown .p-dropdown-panel {
+    border-radius: 0.5rem !important;
+    border: 1px solid #ced4da !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  ::ng-deep .custom-dropdown .p-dropdown-items .p-dropdown-item.p-highlight,
+  ::ng-deep .custom-dropdown .p-dropdown-items .p-dropdown-item:hover {
+    background-color: #3f51b5 !important;
+    color: #fff !important;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  ::ng-deep .custom-dropdown .p-dropdown-trigger {
+    color: #495057 !important;
+    border-left: none !important;
+  }
+  
+  

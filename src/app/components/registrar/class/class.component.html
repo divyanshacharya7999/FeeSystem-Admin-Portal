@@ -1,0 +1,99 @@
+<body class="bg-light">
+  <div class="min-h-screen py-5">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h3 class="p-md-5">Classes<br></h3>
+        <div>
+          <button type="button" class="btn btn-primary m-2" pButton label="Add Class" icon="pi pi-plus"
+          (click)="showAddDialog = true"></button>
+        </div>
+      </div>
+      <main class="bg-white shadow-sm rounded p-4 p-md-5">
+        <h2 class="fs-4 fw-bold mb-3">Classes</h2>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="bg-light">
+                <th scope="col">Class ID</th>
+                <th scope="col" class="text-center">Class Name</th>
+                <th scope="col" class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let model of models">
+                <td> {{model.classId}}</td>
+                <td class="text-center">{{model.className}}</td>
+                <td class="text-end">
+                  <button class="btn btn-outline-info m-2"
+                      (click)="showUpdateDialog = true">Update</button>
+                  <button class="btn btn-outline-danger "
+                    (click)="dataforclassid(model.classId)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+
+
+<!--Add class type-->
+<p-dialog header="Add New Class" [(visible)]="showAddDialog" [modal]="true"
+  [style]="{ width: '400px' }" [draggable]="false" [baseZIndex]="10000"
+  [contentStyle]="{ 'background-color': 'white' }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="feetype" class="form-label">class name</label>
+            <input type="text" class="form-control" id="feetype" placeholder="Enter class"
+              [(ngModel)]="addclass.className" name="className">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" (click)="showAddDialog = false" class="p-button-text"></button>
+    <button pButton label="Add" (click)="addclasses()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Delete Student Confirmation Dialog -->
+<p-dialog header="Delete Class" [(visible)]="showDeleteDialog" [modal]="true" [baseZIndex]="10000"
+  [contentStyle]="{ 'background-color': 'white' }" [draggable]="false" [style]="{ width: '400px'}">
+  <p>Are you sure you want to delete this class?</p>
+  <ng-template pTemplate="footer">
+    <button pButton label="No" icon="pi pi-times" (click)="showDeleteDialog = false" class="p-button-text"></button>
+    <button pButton label="Yes" icon="pi pi-check" (click)="deleteclass()"></button>
+  </ng-template>
+</p-dialog>
+
+
+<!-- Update Student Dialog -->
+<p-dialog header="Update Class" [(visible)]="showUpdateDialog" [modal]="true" [style]="{ width: '500px' }"
+  [baseZIndex]="10000" [contentStyle]="{ 'background-color': 'white' }" [draggable]="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="classId" class="form-label">Class Id</label>
+            <input pInputText class="form-control" type="number" [(ngModel)]="upClass.id" name="classId" />
+          </div>
+          <div class="mb-3">
+            <label for="className" class="form-label">New ClassName</label>
+            <input pInputText class="form-control" type="text" [(ngModel)]="upClass.className" name="className" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" (click)="showUpdateDialog = false" class="p-button-text"></button>
+    <button pButton label="Update" (click)="updateClass()"></button>
+  </ng-template>
+</p-dialog>
