@@ -116,7 +116,7 @@ export class StudentComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.error.message });
       });
     } else {
-      alert('No Student ID found for deletion');
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No Student ID found for deletion' });
     }
   }
 
