@@ -1,0 +1,24 @@
+.min-h-screen {
+    min-height: 100vh;
+  }
+  
+  .bg-gradient-to-br {
+    background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+  }
+  
+  .shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .grid {
+    display: grid;
+  }
+  
+  .rounded-xl {
+    border-radius: 1rem;
+  }
+  
+  .transition-colors {
+    transition: background-color 0.3s, color 0.3s;
+  }
+  

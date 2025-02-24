@@ -1,18 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegistrarService } from '../../../services/registrar.service';
 import { AuthService } from '../../../services/auth.service';
 import { MessageService } from 'primeng/api';
-
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css', '../../../../styles.css']
 })
 
-export class StudentComponent {
-  model: any = [];
+export class StudentComponent implements OnInit {
+  models: any = [];
   searchId: string = '';
   selectedStudentId: number | null = null;
   delstudent: string | null = this.getstudentId()
@@ -20,6 +19,10 @@ export class StudentComponent {
   showAddDialog: boolean = false;
   showUpdateDialog: boolean = false;
   showDeleteDialog: boolean = false;
+  AddFormGroup!: FormGroup;
+  updateFormGroup!: FormGroup;
+  isUpdateMode: Boolean = false;
+  
 
   newStudent: any = {
     dateOfBirth: "2024-08-20T13:01:22.992Z"
@@ -29,14 +32,33 @@ export class StudentComponent {
   }
   isHostLogin: any = false;
   
-  constructor(private router: Router,
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
     private registrarService: RegistrarService,
     public authService: AuthService,
     private messageService: MessageService) {
     this.getStudent();
     this.isHostLogin = this.authService.isHost();
     localStorage.removeItem('studentId');
-    this.getallclasses()
+    this.getallclasses();
+  }
+
+  ngOnInit(): void {
+    this.AddFormGroup = this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      address: ['', [Validators.required]],
+      classId: ['', [Validators.required]]
+    });
+
+    this.updateFormGroup = this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      address: ['', [Validators.required]],
+    });
   }
 
   private getstudentId(): string | null {
@@ -57,9 +79,10 @@ export class StudentComponent {
 
   getStudent() {
     this.registrarService.getStudent().subscribe(data => {
-      this.model = data.result;
+      this.models = data.result;
     });
   }
+
   getschool() {
     this.router.navigate(['school'])
   }
@@ -69,6 +92,18 @@ export class StudentComponent {
     this.delstudent = delstudent
     this.showDeleteDialog = true;
   }
+
+  updateStudentData(studentData: any) {
+    this.updateFormGroup.patchValue({
+      firstName: studentData.firstName,
+      lastName: studentData.lastName,
+      contactNumber: studentData.contactNumber,
+      address: studentData.address,
+    });
+    this.upStudent.studentId = studentData.studentId;
+    this.showUpdateDialog = true;
+  }
+  
 
   deleteStudent() {
     if (this.delstudent !== null) {
@@ -86,6 +121,7 @@ export class StudentComponent {
   }
 
   addStudent() {
+    this.newStudent = this.AddFormGroup.value;   
     this.registrarService.addStudent(this.newStudent).subscribe((response) => {
         if (response.result.success) {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.result.message });
@@ -107,8 +143,12 @@ export class StudentComponent {
   }
 
   updateStudent() {
+    this.upStudent = {
+      ...this.upStudent,
+      ...this.updateFormGroup.value
+    };
     this.registrarService.updateStudent(this.upStudent).subscribe(
-       (response) => {
+      (response) => {
         if (response.result.success) {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.result.message });
           this.showUpdateDialog = false;
@@ -117,16 +157,17 @@ export class StudentComponent {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.result.message });
         }
       },
-      error => {
+      (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.error.message });
       }
     );
   }
+  
 
   searchStudent() {
     if (this.searchId.trim()) {
       const idToSearch = this.searchId.trim();
-      const foundStudent = this.model.find((student: { studentId: string }) => student.studentId === idToSearch);
+      const foundStudent = this.models.find((student: { studentId: string }) => student.studentId === idToSearch);
       if (foundStudent) {
         this.selectedStudentId = foundStudent.studentId;
       } else {

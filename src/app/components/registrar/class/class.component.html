@@ -25,7 +25,7 @@
                 <td class="text-center">{{model.className}}</td>
                 <td class="text-end">
                   <button class="btn btn-outline-info m-2"
-                      (click)="showUpdateDialog = true">Update</button>
+                      (click)="updateClassData(model)">Update</button>
                   <button class="btn btn-outline-danger "
                     (click)="dataforclassid(model.classId)">Delete</button>
                 </td>
@@ -79,14 +79,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="classId" class="form-label">Class Id</label>
-            <input pInputText class="form-control" type="number" [(ngModel)]="upClass.id" name="classId" />
-          </div>
+        <form [formGroup]="updateFormGroup">
           <div class="mb-3">
             <label for="className" class="form-label">New ClassName</label>
-            <input pInputText class="form-control" type="text" [(ngModel)]="upClass.className" name="className" />
+            <input pInputText class="form-control" type="text" formControlName="className" name="className" />
+            <div *ngIf="updateFormGroup.get('className')?.touched && updateFormGroup.get('className')?.invalid"
+              class="text-danger">
+              <small *ngIf="updateFormGroup.get('className')?.errors?.['required']">Class name is required.</small>
+            </div>
           </div>
         </form>
       </div>

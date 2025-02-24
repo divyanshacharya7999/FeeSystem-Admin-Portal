@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RegistrarService } from '../../../services/registrar.service';
-import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-class',
   templateUrl: './class.component.html',
   styleUrls: ['./class.component.css', '../../../../styles.css']
 })
-export class ClassComponent {
+export class ClassComponent implements OnInit {
 
   models: any = []
   addclass: any = {}
@@ -17,9 +17,19 @@ export class ClassComponent {
   showUpdateDialog: boolean = false;
   showDeleteDialog: boolean = false;
   upClass: any = {}
+  updateFormGroup!: FormGroup
 
-  constructor(private registrarService: RegistrarService, private router: Router, private messageService: MessageService){
+  constructor(
+    private registrarService: RegistrarService,
+    private messageService: MessageService,
+    private fb: FormBuilder){
     this.getclass()
+  }
+
+  ngOnInit(): void {
+    this.updateFormGroup = this.fb.group({
+      className: ["", [Validators.required]]
+    })
   }
 
   getclass(){
@@ -47,7 +57,20 @@ export class ClassComponent {
     });
   }
 
+  updateClassData(ClassData: any){
+    this.updateFormGroup.patchValue({
+      className: ClassData.className,
+    });
+    this.upClass.Id = ClassData.classId;
+    this.showUpdateDialog = true;
+
+  }
+
   updateClass(){
+    this.upClass = {
+      ...this.upClass,
+      ...this.updateFormGroup.value
+    };
     this.registrarService.updateClass(this.upClass).subscribe(response =>{
       if(response.result.success){
         this.messageService.add({ severity: 'success', summary: 'Success', detail: response.result.message });

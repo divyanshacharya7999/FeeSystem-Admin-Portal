@@ -11,7 +11,7 @@
           Get School
         </button>
         <button type="button" class="btn btn-primary m-2 " pButton label="Add Student" icon="pi pi-plus"
-          (click)="showAddDialog = true"></button>
+          (click)="this.showAddDialog = true"></button>
         <button type="button" class="btn btn-primary m-2 " (click)="getclass()">
           Get All Class
         </button>
@@ -35,30 +35,30 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="border-bottom" *ngFor="let models of model"
-                [class.table-active]="models.studentId === selectedStudentId">
+              <tr class="border-bottom" *ngFor="let model of models"
+                [class.table-active]="model.studentId === selectedStudentId">
                 <td class="p-4">
-                  <p>{{models.studentId}}</p>
+                  <p>{{model.studentId}}</p>
                 </td>
                 <td class="p-4">
-                  <p>{{models.firstName}} {{models.lastName}}</p>
+                  <p>{{model.firstName}} {{model.lastName}}</p>
                 </td>
                 <td class="p-4">
-                  <p>{{models.contactNumber}}</p>
+                  <p>{{model.contactNumber}}</p>
                 </td>
                 <td class="p-4">
-                  <p>{{models.className}}</p>
+                  <p>{{model.className}}</p>
                 </td>
                 <td class="p-4">
-                  <p>{{models.address}}</p>
+                  <p>{{model.address}}</p>
                 </td>
                 <td class="p-4">
                   <div class="d-flex gap-2">
-                    <button class="btn btn-outline-info" (click)="studentfee(models.studentId)">Get Info</button>
+                    <button class="btn btn-outline-info" (click)="studentfee(model.studentId)">Get Info</button>
                     <button type="button" pButton label="Update Student" class="btn btn-outline-info"
-                      (click)="showUpdateDialog = true"></button>
+                      (click)="updateStudentData(model)"></button>
                     <button type="button" pButton label="Delete Student" class="btn btn-outline-info"
-                      (click)="deletestudentdata(models.studentId)">
+                      (click)="deletestudentdata(model.studentId)">
                     </button>
                   </div>
                 </td>
@@ -79,32 +79,64 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <form>
+        <form [formGroup]="AddFormGroup">
           <div class="mb-3">
             <label for="studentfirstName" class="form-label">First Name</label>
             <input type="text" class="form-control" id="studentfirstName" placeholder="Enter student first name"
-              [(ngModel)]="newStudent.firstName" name="firstName">
+              formControlName="firstName" name="firstName">
+            <div *ngIf="AddFormGroup.get('firstName')?.touched && AddFormGroup.get('firstName')?.errors">
+              <small class="text-danger" *ngIf="AddFormGroup.get('firstName')?.errors?.['required']">
+                First Name is required.
+              </small>
+              <small class="text-danger" *ngIf="AddFormGroup.get('firstName')?.errors?.['minlength']">
+                First Name must be at least 2 characters long.
+              </small>
+            </div>
           </div>
+
+
           <div class="mb-3">
             <label for="studentlastName" class="form-label">Last Name</label>
             <input type="text" class="form-control" id="studentlastName" placeholder="Enter student last name"
-              [(ngModel)]="newStudent.lastName" name="lastName">
+              formControlName="lastName" />
+            <div *ngIf="AddFormGroup.get('lastName')?.touched && AddFormGroup.get('lastName')?.invalid"
+              class="text-danger">
+              <small *ngIf="AddFormGroup.get('lastName')?.errors?.['required']">Last name is required.</small>
+            </div>
           </div>
+
           <div class="mb-3">
             <label for="studentPhone" class="form-label">Phone</label>
             <input type="text" class="form-control" id="studentPhone" placeholder="Enter phone number"
-              [(ngModel)]="newStudent.contactNumber" name="contactNumber">
+              formControlName="contactNumber" />
+            <div
+              *ngIf="AddFormGroup.get('contactNumber')?.touched && AddFormGroup.get('contactNumber')?.invalid"
+              class="text-danger">
+              <small *ngIf="AddFormGroup.get('contactNumber')?.errors?.['required']">Phone number is required.</small>
+              <small *ngIf="AddFormGroup.get('contactNumber')?.errors?.['pattern']">Enter a valid phone
+                number.</small>
+            </div>
           </div>
+
           <div class="mb-3">
             <label for="address" class="form-label">Address</label>
             <input type="text" class="form-control" id="address" placeholder="Enter your Address"
-              [(ngModel)]="newStudent.address" name="address">
+              formControlName="address" />
+            <div *ngIf="AddFormGroup.get('address')?.touched && AddFormGroup.get('address')?.invalid"
+              class="text-danger">
+              <small *ngIf="AddFormGroup.get('address')?.errors?.['required']">Address is required.</small>
+            </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Class</label>
-            <p-dropdown class="custom-dropdown" [options]="classes" [(ngModel)]="newStudent.classId"
-              optionLabel="className" optionValue="id" placeholder="Select Class" name="classId">
+            <p-dropdown class="custom-dropdown" [options]="classes" optionLabel="className" optionValue="id"
+              formControlName="classId" placeholder="Select Class">
             </p-dropdown>
+            <div *ngIf="AddFormGroup.get('classId')?.touched && AddFormGroup.get('classId')?.invalid"
+              class="text-danger">
+              <small *ngIf="AddFormGroup.get('classId')?.errors?.['required']">Class selection is required.</small>
+            </div>
           </div>
         </form>
       </div>
@@ -112,9 +144,10 @@
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Cancel" (click)="showAddDialog = false" class="p-button-text"></button>
-    <button pButton label="Add" (click)="addStudent()"></button>
+    <button pButton label="Add" [disabled]="AddFormGroup.invalid" (click)="addStudent()"></button>
   </ng-template>
 </p-dialog>
+
 
 <!-- Update Student Dialog -->
 <p-dialog header="Update Student" [(visible)]="showUpdateDialog" [modal]="true" [style]="{ width: '500px' }"
@@ -122,26 +155,42 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="id" class="form-label">Re-confirm Id</label>
-            <input pInputText class="form-control" type="text" [(ngModel)]="upStudent.studentId" name="studentId" />
-          </div>
+        <form [formGroup]="updateFormGroup">
           <div class="mb-3">
             <label for="studentName" class="form-label">First Name</label>
-            <input pInputText class="form-control" type="text" [(ngModel)]="upStudent.firstName" name="firstName" />
+            <input pInputText class="form-control" type="text" formControlName="firstName" />
+            <div *ngIf="updateFormGroup.get('firstName')?.touched && updateFormGroup.get('firstName')?.invalid"
+              class="text-danger">
+              <small *ngIf="updateFormGroup.get('firstName')?.errors?.['required']">First name is required.</small>
+            </div>
           </div>
+
           <div class="mb-3">
             <label for="studentName" class="form-label">Last Name</label>
-            <input pInputText class="form-control" type="text" [(ngModel)]="upStudent.lastName" name="lastName" />
+            <input pInputText class="form-control" type="text" formControlName="lastName" />
+            <div *ngIf="updateFormGroup.get('lastName')?.touched && updateFormGroup.get('lastName')?.invalid"
+              class="text-danger">
+              <small *ngIf="updateFormGroup.get('lastName')?.errors?.['required']">Last name is required.</small>
+            </div>
           </div>
+
           <div class="mb-3">
             <label for="studentPhone" class="form-label">Phone</label>
-            <input pInputText class="form-control" type="text" [(ngModel)]="upStudent.contactNumber" name="contactNumber" />
+            <input pInputText class="form-control" type="text" formControlName="contactNumber" />
+            <div *ngIf="updateFormGroup.get('contactNumber')?.touched && updateFormGroup.get('contactNumber')?.invalid"
+              class="text-danger">
+              <small *ngIf="updateFormGroup.get('contactNumber')?.errors?.['required']">Phone number is required.</small>
+              <small *ngIf="updateFormGroup.get('contactNumber')?.errors?.['pattern']">Invalid phone number format.</small>
+            </div>
           </div>
+
           <div class="mb-3">
             <label for="studentClass" class="form-label">Address</label>
-            <input pInputText class="form-control" type="text" [(ngModel)]="upStudent.address" name="address" />
+            <input pInputText class="form-control" type="text" formControlName="address" />
+            <div *ngIf="updateFormGroup.get('address')?.touched && updateFormGroup.get('address')?.invalid"
+              class="text-danger">
+              <small *ngIf="updateFormGroup.get('address')?.errors?.['required']">Address is required.</small>
+            </div>
           </div>
         </form>
       </div>
@@ -149,9 +198,10 @@
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Cancel" (click)="showUpdateDialog = false" class="p-button-text"></button>
-    <button pButton label="Update" (click)="updateStudent()"></button>
+    <button pButton label="Update" [disabled]="updateFormGroup.invalid" (click)="updateStudent()"></button>
   </ng-template>
 </p-dialog>
+
 
 <!-- Delete Student Confirmation Dialog -->
 <p-dialog header="Delete Student" [(visible)]="showDeleteDialog" [modal]="true" [baseZIndex]="10000"

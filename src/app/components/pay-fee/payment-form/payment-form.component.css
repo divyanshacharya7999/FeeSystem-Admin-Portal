@@ -1,0 +1,32 @@
+.input-style {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-style:focus {
+    border-color: #2563eb;
+  }
+  
+  .btn {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    border: none;
+  }
+  
+  .btn:hover:not([disabled]) {
+    background-color: #2563eb;
+  }
+  
+  .btn[disabled] {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+  

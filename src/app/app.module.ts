@@ -6,7 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StudentComponent } from './components/registrar/student/student.component';
 import { StudentfeesComponent } from './components/registrar/student/GetStudentByID/studentfees/studentfees.component';
 import { FeeStructureComponent } from './components/fee-structure/fee-structure.component';
@@ -24,6 +24,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Toast, ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { Ripple } from 'primeng/ripple';
+import { PayFeeComponent } from './components/pay-fee/pay-fee.component';
+import { ApplePaymentComponent } from './components/pay-fee/apple-payment/apple-payment.component';
+import { CreditCardOptionComponent } from './components/pay-fee/credit-card-option/credit-card-option.component';
+import { GooglePayOptionComponent } from './components/pay-fee/google-pay-option/google-pay-option.component';
+import { PaymentFormComponent } from './components/pay-fee/payment-form/payment-form.component';
+import { PaypalOptionComponent } from './components/pay-fee/paypal-option/paypal-option.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +42,13 @@ import { Ripple } from 'primeng/ripple';
     PaymentplanComponent,
     ClassComponent,
     SchoolComponent,
-    PaymentComponent
+    PaymentComponent,
+    PayFeeComponent,
+    ApplePaymentComponent,
+    CreditCardOptionComponent,
+    GooglePayOptionComponent,
+    PaymentFormComponent,
+    PaypalOptionComponent
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, CommonModule, FormsModule,
     BrowserAnimationsModule,
@@ -45,6 +57,7 @@ import { Ripple } from 'primeng/ripple';
     DropdownModule,
     InputTextModule,
     ToastModule,
+    ReactiveFormsModule 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: tenantInterceptor, multi: true },
     MessageService

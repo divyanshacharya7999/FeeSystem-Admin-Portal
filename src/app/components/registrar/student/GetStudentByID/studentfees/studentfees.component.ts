@@ -17,9 +17,9 @@ export class StudentfeesComponent {
     this.getFeeForStudent();
     
   }
+
   getFeeForStudent(){
     const studentId  = localStorage.getItem('studentId')
-
    this.feeService.getfeeForStudent(studentId).subscribe(data => {
     console.log(data);
     this.model = data.result;
@@ -37,10 +37,14 @@ export class StudentfeesComponent {
     });
     
   }
+
   get TotalAmount(): number {
   return this.model.reduce((sum: number, current: { amountPerPeriod: number }) => {
     return sum + current.amountPerPeriod;
-  }, 0); // Initial value of sum is 0
+  }, 0); 
 }
-
+ 
+payNow(){
+  this.router.navigate(['payFee']);
+}
 }
