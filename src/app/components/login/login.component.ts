@@ -3,16 +3,15 @@ import { AuthService } from '../../services/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 import { AppTenantAvailabilityState } from '../../services/tenant.service';
-import { Token } from '@angular/compiler';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css', '../../../styles.css']
 })
   
-
 export class LoginComponent {
   model  = {
     userNameOrEmailAddress: '' ,
@@ -21,15 +20,11 @@ export class LoginComponent {
     rememberClient:true
   }
 
-
-constructor(private authService: AuthService, private router: Router){}
+constructor(private authService: AuthService, private router: Router, private messageService: MessageService){}
 
 istenantAvailable() {
-
-
-  // If tenantId is empty or null, treat this as a host login
   if (!this.model.tenantId) {
-    this.login(); // Directly proceed to login as a host
+    this.login();
     return;
   }
 
@@ -43,11 +38,11 @@ istenantAvailable() {
           return;
 
         case AppTenantAvailabilityState.InActive:
-          alert('Tenant is not active');
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Tenant is not active' });
           break;
 
         case AppTenantAvailabilityState.NotFound:
-          alert('Tenant not found');
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Tenant not found' });
           break;
       }
     },
@@ -60,7 +55,7 @@ istenantAvailable() {
 
 login(){
   this.authService.login(this.model).subscribe((response) => {
-    console.log(response);
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login Successfully' });
     localStorage.setItem('token', response.result.accessToken);
     const decodedToken: any = jwtDecode(response.result.accessToken);
     const role=decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
@@ -70,11 +65,8 @@ login(){
     } else {
       this.router.navigate(['login']);
     }
-
-    alert('Login successful');
   }, (error) => {
-    console.error(error);
-    alert('Login failed');
+    this.messageService.add({ severity: 'error', summary:  error.error.error.message, detail: error.error.error.details });
   });
 }
 

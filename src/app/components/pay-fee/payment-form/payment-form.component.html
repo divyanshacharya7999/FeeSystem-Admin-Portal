@@ -1,69 +1,48 @@
-<form
-  [formGroup]="paymentForm"
-  (ngSubmit)="handleSubmit()"
-  @fadeIn
-  class="space-y-4"
->
-  <ng-container *ngIf="method === 'credit-card'">
+<form [formGroup]="CreditpaymentForm" (ngSubmit)="handleSubmit()" @fadeIn class="space-y-4" *ngIf="method === 'Credit-Card'">
+  <ng-container>
     <div>
       <label for="card-number" class="block text-sm font-medium text-gray-700">Card Number</label>
-      <input
-        id="card-number"
-        formControlName="cardNumber"
-        placeholder="1234 5678 9012 3456"
-        class="input-style"
-        required
-      />
+      <input id="card-number" formControlName="cardNumber" placeholder="1234 5678 9012 3456" class="input-style"
+        required />
     </div>
     <div class="flex space-x-4">
       <div class="flex-1">
         <label for="expiry" class="block text-sm font-medium text-gray-700">Expiry Date</label>
-        <input
-          id="expiry"
-          formControlName="expiry"
-          placeholder="MM/YY"
-          class="input-style"
-          required
-        />
+        <input id="expiry" formControlName="expiry" placeholder="MM/YY" class="input-style" required />
       </div>
-      <div class="flex-1">
+      <div class="flex-1 ml-2">
         <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
-        <input
-          id="cvv"
-          formControlName="cvv"
-          placeholder="123"
-          class="input-style"
-          required
-        />
+        <input id="cvv" formControlName="cvv" placeholder="123" class="input-style" required />
       </div>
     </div>
   </ng-container>
 
-  <ng-container *ngIf="method === 'paypal'">
+  <button type="submit" class="btn w-full mt-2" [disabled]="loading">
+    {{ loading ? 'Processing...' : ('Pay with ' + method.replace('-', ' ')) }}
+  </button>
+</form>
+
+<form [formGroup]="PayPalPaymentForm" (ngSubmit)="handleSubmit()" @fadeIn class="space-y-4" *ngIf="method === 'Paypal'">
+  <ng-container>
     <div>
       <label for="paypal-email" class="block text-sm font-medium text-gray-700">PayPal Email</label>
-      <input
-        id="paypal-email"
-        formControlName="paypalEmail"
-        type="email"
-        placeholder="you@example.com"
-        class="input-style"
-        required
-      />
+      <input id="paypal-email" formControlName="paypalEmail" type="email" placeholder="you@example.com"
+        class="input-style" required />
     </div>
   </ng-container>
+  <button type="submit" class="btn w-full mt-2" [disabled]="loading">
+    {{ loading ? 'Processing...' : ('Pay with ' + method.replace('-', ' ')) }}
+  </button>
+</form>
 
-  <ng-container *ngIf="method === 'apple-pay' || method === 'google-pay'">
+<form *ngIf="method === 'Apple-Pay' || method === 'Google-Pay'">
+  <ng-container>
     <p class="text-gray-600">
-      Click the button below to complete your payment using {{ method === 'apple-pay' ? 'Apple Pay' : 'Google Pay' }}.
+      Click the button below to complete your payment using {{ method === 'Apple-Pay' ? 'Apple Pay' : 'Google Pay' }}.
     </p>
   </ng-container>
 
-  <button
-    type="submit"
-    class="btn w-full"
-    [disabled]="loading"
-  >
+  <button type="submit" class="btn w-full mt-2" [disabled]="loading">
     {{ loading ? 'Processing...' : ('Pay with ' + method.replace('-', ' ')) }}
   </button>
 </form>
