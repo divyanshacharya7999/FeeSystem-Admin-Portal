@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { SchoolResult } from '../models/school-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -60,5 +61,9 @@ export class RegistrarService {
 
   deleteSchool(delschool: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/Tenant/Delete?Id=${delschool}`)
+  }
+
+  getAllSchool(){
+    return this.http.get<SchoolResult>(`${this.apiUrl}/Student/GetAllSchool`)
   }
 }

@@ -68,11 +68,11 @@
         <div class="mb-3">
           <label class="form-label">Interval in Months</label>
           <p-dropdown class="custom-dropdown" [options]="Intervals" optionLabel="name" optionValue="id"
-            formControlName="intervalInMonths" placeholder="Select Class">
+            formControlName="intervalInMonths" placeholder="Select Interval">
           </p-dropdown>
           <div *ngIf="AddFormGroup.get('intervalInMonths')?.touched && AddFormGroup.get('intervalInMonths')?.invalid"
             class="text-danger">
-            <small *ngIf="AddFormGroup.get('intervalInMonths')?.errors?.['required']">Class selection is required.</small>
+            <small *ngIf="AddFormGroup.get('intervalInMonths')?.errors?.['required']">Interval in months is required.</small>
           </div>
         </div>
       </form>
